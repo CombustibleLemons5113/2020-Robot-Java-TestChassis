@@ -11,8 +11,10 @@ import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.commands.CenterTargetRobot;
 import frc.robot.commands.DriveCommand;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.LimeLight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -22,9 +24,9 @@ import frc.robot.subsystems.DriveTrain;
  */
 public class Robot extends TimedRobot {
 
-  private RobotContainer m_robotContainer;
+  public static RobotContainer m_robotContainer;
   public static DriveTrain driveTrain = new DriveTrain();
-  
+  public static LimeLight lime = new LimeLight();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -35,8 +37,6 @@ public class Robot extends TimedRobot {
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
-    m_robotContainer = new RobotContainer();
-    driveTrain.setDefaultCommand(new DriveCommand(()->(m_robotContainer.getLeft()), ()->(m_robotContainer.getRight())));
   }
 
   /**
@@ -52,7 +52,6 @@ public class Robot extends TimedRobot {
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
-    CommandScheduler.getInstance().run();
   }
 
   /**
@@ -70,15 +69,19 @@ public class Robot extends TimedRobot {
    * This autonomous runs the autonomous command selected by your {@link RobotContainer} class.
    */
   @Override
-  public void autonomousInit() {
-
+  public void autonomousInit() 
+  {
+    CommandScheduler.getInstance().cancelAll();
+    driveTrain.setDefaultCommand(new CenterTargetRobot());
   }
 
-  /**
+  /*
    * This function is called periodically during autonomous.
    */
   @Override
-  public void autonomousPeriodic() {
+  public void autonomousPeriodic() 
+  {  
+    CommandScheduler.getInstance().run();
   }
 
   @Override
@@ -86,16 +89,20 @@ public class Robot extends TimedRobot {
     // This makes sure that the autonomous stops running when
     // teleop starts running. If you want the autonomous to
     // continue until interrupted by another command, remove
-    // this line or comment it out.
-
+    // this line or comment it out.  
+    CommandScheduler.getInstance().cancelAll();
+    m_robotContainer = new RobotContainer();
+    driveTrain.setDefaultCommand(new DriveCommand(()->(m_robotContainer.getLeft()), ()->(m_robotContainer.getRight())));
   }
 
   /**
    * This function is called periodically during operator control.
    */
   @Override
-  public void teleopPeriodic() {
-    
+  public void teleopPeriodic() 
+  {
+    //System.out.println(driveTrain.getDefaultCommand());
+    CommandScheduler.getInstance().run();
   }
 
   @Override

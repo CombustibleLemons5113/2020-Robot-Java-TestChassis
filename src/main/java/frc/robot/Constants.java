@@ -16,9 +16,15 @@ package frc.robot;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
-    public static final int frontLeftID = 12;
-    //THESE SHOULD BE SET WHEN WE GET THE TEST CHASSIS
-	public static final int rightLeftID = 22;
-	public static final int backLeftID = 11;
-	public static final int backRightID = 21;
+
+	//CHASSIS MOTOR PORTS
+    public static final int kFLChassis = 12;
+	public static final int kFRChassis = 22;
+	public static final int kBLChassis = 11;
+	public static final int kBRChassis = 21;
+
+	//SHOOTER MOTOR PORTS
+	public static final int kLShooter = 0;
+	public static final int kRShooter = 1;
+
 }

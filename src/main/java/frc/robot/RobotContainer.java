@@ -11,7 +11,10 @@ import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.GenericHID.Hand;
+import edu.wpi.first.wpilibj.XboxController.Button;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import frc.robot.commands.CenterTargetRobot;
 import frc.robot.subsystems.DriveTrain;
 
 /**
@@ -23,22 +26,29 @@ import frc.robot.subsystems.DriveTrain;
 public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
-  private DriveTrain drive = new DriveTrain();
-
   public Joystick controllerLeft = new Joystick(1);
   public Joystick controllerRight = new Joystick(0);
+  public JoystickButton leftTrigger = new JoystickButton(controllerLeft, 1);
 
 
   /**
    * The container for the robot.  Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
+  public RobotContainer() 
+  {
     // Configure the button bindings
+    leftTrigger.whenPressed(new CenterTargetRobot());
+
     configureButtonBindings();
   }
 
   public double getLeft() {
     return controllerLeft.getRawAxis(1);
+
+  }
+  
+  public boolean getLeftTrigger() {
+    return controllerRight.getTrigger();
   }
 
   public double getRight() {
@@ -52,6 +62,10 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    
+    //leftTrigger.and(rightTrigger).toggleWhenActive(new CenterTarget(""));
+
   }
 
 

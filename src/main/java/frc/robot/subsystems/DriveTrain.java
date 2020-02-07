@@ -8,39 +8,31 @@
 package frc.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
-import edu.wpi.first.wpilibj.drive.DifferentialDrive;
-import edu.wpi.first.wpilibj.geometry.Pose2d;
-import edu.wpi.first.wpilibj.geometry.Rotation2d;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
-import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
-import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj.drive.DifferentialDrive;
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
 import frc.robot.Constants;
+import edu.wpi.first.wpilibj.util.Units;
 
 public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-
-  private WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.frontLeftID);
-  private WPI_TalonFX rightMaster = new WPI_TalonFX(Constants.rightLeftID);
-  private WPI_TalonFX leftSlave = new WPI_TalonFX(Constants.backLeftID);
-  private WPI_TalonFX rightSlave = new WPI_TalonFX(Constants.backRightID);
+  
+  public WPI_TalonFX leftMaster = new WPI_TalonFX(Constants.kFLChassis);
+  public WPI_TalonFX rightMaster = new WPI_TalonFX(Constants.kFRChassis);
+  public WPI_TalonFX leftSlave = new WPI_TalonFX(Constants.kBLChassis);
+  public WPI_TalonFX rightSlave = new WPI_TalonFX(Constants.kBRChassis);
   private SpeedControllerGroup leftSide = new SpeedControllerGroup(leftMaster, leftSlave);
   private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightMaster, rightSlave);
-
-  private AHRS gyro = new AHRS(SPI.Port.kMXP);
   private DifferentialDrive driveBase = new DifferentialDrive(leftSide, rightSide);
-  private DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(Units.inchesToMeters(3)); //ADD WITDH OF ROBOT FROM WHEEL TO WHEEL
-  private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
-
-  Pose2d pose;
+  private AHRS gyro = new AHRS(SPI.Port.kMXP, (byte)60);
 
   public DriveTrain() {
 
@@ -50,28 +42,48 @@ public class DriveTrain extends SubsystemBase {
     leftSide.setInverted(false);
     rightSide.setInverted(false);
 
-    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
-    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 0);
+    leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    leftSlave.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+    rightSlave.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor);
+
+    leftMaster.setNeutralMode(NeutralMode.Brake);
+    rightMaster.setNeutralMode(NeutralMode.Brake);
+    leftSlave.setNeutralMode(NeutralMode.Brake);
+    rightSlave.setNeutralMode(NeutralMode.Brake);
+
+    
+    gyro.enableLogging(true);
+    System.out.println(gyro.getFirmwareVersion());
+    //gyro.isCalibrating();
+    System.out.println(gyro.isRotating());
+
   
   }
-
-  public void driveCartesian(double left, double right) {
-    driveBase.tankDrive(left, right);
-  }
-
-  public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-gyro.getAngle());
-  }
-
-  public DifferentialDriveWheelSpeeds getSpeeds() {
+  public DifferentialDriveWheelSpeeds getSpeeds() 
+  {
     return (new DifferentialDriveWheelSpeeds(
       leftMaster.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(2.0), 
-      rightMaster.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(2.0))); // change the wheel radius
+      (-1) * rightMaster.getSelectedSensorVelocity() / 7.29 * 2 * Math.PI * Units.inchesToMeters(2.0))); // change the wheel radius
+  }
+  public void driveCartesian(double left, double right) {
+    //System.out.println("here");
+    driveBase.tankDrive(left, right);
+    //System.out.println(gyro.getAngle());
+    
+    /*
+    if(getSpeeds().leftMetersPerSecond != 0.0 && getSpeeds().rightMetersPerSecond != 0.0)
+    {
+      System.out.println("************");
+      System.out.println("gryo: " + gyro.getAngle());
+      System.out.println("left: " + getSpeeds().leftMetersPerSecond);
+      System.out.println("right: " + getSpeeds().rightMetersPerSecond);
+    }
+    */
+
+    //System.out.println("Left Master Value: " + leftMaster.getSelectedSensorPosition());
+    //System.out.println("Right Master Value: " + rightMaster.getSelectedSensorPosition());
   }
 
-  @Override
-  public void periodic() {
-    // This method will be called once per scheduler run
-    pose = odometry.update(getHeading(), getSpeeds().leftMetersPerSecond, getSpeeds().rightMetersPerSecond);
-  }
+
 }
