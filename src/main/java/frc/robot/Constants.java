@@ -33,7 +33,7 @@ public final class Constants {
 		public static final double kSChassis = 0.0741;
 		public static final double kVChassis = 2.87;
 		public static final double kAChassis = 0.289;
-		public static final double kPDriveVel = 1.49;
+		public static final double kPDriveVel = 17.9;
 
 		//AUTON HELPERS
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);

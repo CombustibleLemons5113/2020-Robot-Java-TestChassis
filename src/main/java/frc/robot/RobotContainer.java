@@ -60,9 +60,6 @@ public class RobotContainer {
   public RobotContainer() 
   {
     // Configure the button bindings
-    leftTrigger.whenPressed(new CenterTargetRobot(driveTrain, lime));
-    rightTrigger.whenPressed(new ShootBall(shooter));
-
     configureButtonBindings();
   }
 
@@ -87,7 +84,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    
+    leftTrigger.whenPressed(new CenterTargetRobot(driveTrain, lime));
+    rightTrigger.whenPressed(new ShootBall(shooter));
     //leftTrigger.and(rightTrigger).toggleWhenActive(new CenterTarget(""));
 
   }
@@ -109,8 +107,8 @@ public class RobotContainer {
 
     // Create config for trajectory
     TrajectoryConfig config =
-        new TrajectoryConfig(kRamseteB,
-                             kRamseteZ)
+        new TrajectoryConfig(10,
+                             5)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(kDriveKinematics)
             // Apply the voltage constraint

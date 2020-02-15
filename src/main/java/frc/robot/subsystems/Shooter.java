@@ -5,8 +5,8 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 
-import edu.wpi.first.wpilibj.DoubleSolenoid;
-import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
+//import edu.wpi.first.wpilibj.DoubleSolenoid;
+//import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.ShooterConstants.*;
@@ -34,7 +34,7 @@ public class Shooter extends SubsystemBase
     private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kSShooter, kVShooter);
 
     //instantiate the hood here
-    private DoubleSolenoid hood = new DoubleSolenoid(kRHoodPiston, kLHoodPiston);
+    //private DoubleSolenoid hood = new DoubleSolenoid(kRHoodPiston, kLHoodPiston);
 
     public Shooter()
     {
@@ -67,15 +67,15 @@ public class Shooter extends SubsystemBase
     }
 
     public void hoodUp() {
-        hood.set(Value.kForward);
+        //hood.set(Value.kForward);
     }
 
     public void hoodDown() {
-        hood.set(Value.kReverse);
+        //hood.set(Value.kReverse);
     }
 
     public boolean getPistonState() {
-        return (hood.get() == DoubleSolenoid.Value.kForward);
+        return true; //(hood.get() == DoubleSolenoid.Value.kForward);
     }
 
     protected void useOutput(double output, double setpoint) {
