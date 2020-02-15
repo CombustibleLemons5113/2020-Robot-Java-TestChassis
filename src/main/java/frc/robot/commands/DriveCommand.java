@@ -10,25 +10,26 @@ package frc.robot.commands;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Robot;
+import frc.robot.subsystems.DriveTrain;
 
 public class DriveCommand extends CommandBase {
   /**
    * Creates a new DriveCommands.
    */
 
-   private DoubleSupplier leftVal;
-   private DoubleSupplier rightVal;
-  public DriveCommand(DoubleSupplier leftVal, DoubleSupplier rightVal) {
+  private DriveTrain driveTrain;
+  private DoubleSupplier leftVal;
+  private DoubleSupplier rightVal;
+
+  public DriveCommand(DoubleSupplier leftVal, DoubleSupplier rightVal, DriveTrain driveTrain) {
     // Use addRequirements() here to declare subsystem dependencies.
-    
-    addRequirements(Robot.driveTrain);
+    this.driveTrain = driveTrain;
+    addRequirements(driveTrain);
     this.leftVal = leftVal;
     this.rightVal = rightVal;
   }
 
-
-// Called when the command is initially scheduled.
+  // Called when the command is initially scheduled.
   @Override
   public void initialize() {
   }
@@ -36,9 +37,9 @@ public class DriveCommand extends CommandBase {
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() {
-    //System.out.println("L: " + leftVal.getAsDouble());
-    //System.out.println("R: " + rightVal.getAsDouble() + "\n");
-    Robot.driveTrain.driveCartesian(leftVal.getAsDouble(), rightVal.getAsDouble());
+    // System.out.println("L: " + leftVal.getAsDouble());
+    // System.out.println("R: " + rightVal.getAsDouble() + "\n");
+    driveTrain.driveCartesian(leftVal.getAsDouble(), rightVal.getAsDouble());
   }
 
   // Called once the command ends or is interrupted.
@@ -48,8 +49,7 @@ public class DriveCommand extends CommandBase {
 
   // Returns true when the command should end.
   @Override
-  public boolean isFinished() 
-  {
+  public boolean isFinished() {
     return false;
   }
 }

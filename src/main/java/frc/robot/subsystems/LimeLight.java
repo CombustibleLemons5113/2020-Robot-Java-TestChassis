@@ -1,4 +1,3 @@
-
 package frc.robot.subsystems;
 
 
@@ -8,8 +7,10 @@ import edu.wpi.first.networktables.NetworkTableEntry;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import static frc.robot.Constants.LimelightConstants.*;
 
-public class LimeLight extends SubsystemBase {
+public class LimeLight extends SubsystemBase
+{
 
     /**
         * Handler for the Limelight on the robot:
@@ -20,6 +21,7 @@ public class LimeLight extends SubsystemBase {
 
     NetworkTable table;
     NetworkTableEntry tx, ty, ta;
+    double x, y, area;
     double offsetX;
     double kp = 0.1;
     public LimeLight()
@@ -35,9 +37,9 @@ public class LimeLight extends SubsystemBase {
         
         
         //read values periodically
-        double x = tx.getDouble(0.0);
-        double y = ty.getDouble(0.0);
-        double area = ta.getDouble(0.0);
+        x = tx.getDouble(0.0);
+        y = ty.getDouble(0.0);
+        area = ta.getDouble(0.0);
         offsetX = x;
         //post to smart dashboard periodically
         SmartDashboard.putNumber("LimelightX", x);
@@ -78,5 +80,15 @@ public class LimeLight extends SubsystemBase {
     {
         update();
         return tx.getDouble(0.0);
+    }
+
+    public double getDistanceToTarget()
+    {
+        update();
+        //d = (h2-h1) / tan(a1+a2)
+        double distance = 
+        (groundToTarget - groundToLimelight) /
+        Math.tan(Math.toRadians(limelightAngleDegress) + Math.toRadians(y));
+        return distance;
     }
 }

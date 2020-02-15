@@ -7,6 +7,9 @@
 
 package frc.robot;
 
+import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
+import edu.wpi.first.wpilibj.util.Units;
+
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide numerical or boolean
  * constants.  This class should not be used for any other purpose.  All constants should be
@@ -17,14 +20,98 @@ package frc.robot;
  */
 public final class Constants {
 
-	//CHASSIS MOTOR PORTS
-    public static final int kFLChassis = 12;
-	public static final int kFRChassis = 22;
-	public static final int kBLChassis = 11;
-	public static final int kBRChassis = 21;
+	public static final class ChassisConstants {
 
-	//SHOOTER MOTOR PORTS
-	public static final int kLShooter = 0;
-	public static final int kRShooter = 1;
+		//CHASSIS MOTOR PORTS
+		public static final int kFLChassis = 12;
+		public static final int kFRChassis = 22;
+		public static final int kBLChassis = 11;
+		public static final int kBRChassis = 21;
+
+		//CHARACTERIZATION VALUES FOR CHASSIS
+		public static final double kTrackWidth = 0.4464852526536931;
+		public static final double kSChassis = 0.0741;
+		public static final double kVChassis = 2.87;
+		public static final double kAChassis = 0.289;
+		public static final double kPDriveVel = 1.49;
+
+		//AUTON HELPERS
+		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
+		public static final double kRamseteB = 2;
+		public static final double kRamseteZ = 0.7;
+
+	}
+
+	public static final class IntakeConstants {
+
+		//INTAKE PISTON AND MOTOR *********** PORTS NEED UPDATING
+		public static final int kIntakeMotor = 0;
+		public static final int kLIntakePiston = 0;
+		public static final int kRIntakePiston = 0;
+
+	}
+
+	public static final class IndexerConstants {
+
+		//INDEXER MOTORS NEED TO BE ADDED
+
+	}
+	
+	public static final class TurretConstants {
+
+		//TURRET MOTOR PORT
+		public static final int kTurretMotor = 2; //<THIS IS A SUBSTITUTE NUMBER NOT ACTUAL NUMBER
+
+
+	}
+
+	public static final class LimelightConstants {
+
+		//LIMELIGHT DISTANCE CALCULATION *********** ALL NEED UPDATING
+		public static final double groundToLimelight = Units.inchesToMeters(24);
+		public static final double groundToTarget = Units.inchesToMeters(50);
+		public static final double limelightAngleDegress = 25;
+
+	}
+	
+	public static final class ShooterConstants {
+
+		//ALL NEED UPDATING
+
+		//SHOOTER MOTOR PORTS
+		public static final int kLShooterMotor = 0;
+		public static final int kRShooterMotor = 1;
+		
+		//HOOD PISTON PORTS
+		public static final int kRHoodPiston = 0;
+		public static final int kLHoodPiston = 0;
+
+		//S AND V VALUES FOR SHOOTER
+		public static final double kSShooter = 0;
+		public static final double kVShooter = 0;
+
+		//PID VALUES FOR SHOOTER
+		public static final double kShooterkP = 0;
+		public static final double kShooterkI = 0;
+		public static final double kShooterkD = 0;
+
+	}
+
+	public static final class ClimberConstants {
+
+		//CLIMBER MOTOR AND SPEED *********** NEED TO BE UPDATED
+		public static final int kClimber = 0;
+		public static final double kClimbSpeed = 0.25;
+
+	}
+
+
+	
+
+	
+	
+	
+	
+
 
 }

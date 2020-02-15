@@ -7,14 +7,9 @@
 
 package frc.robot;
 
-import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.commands.CenterTargetRobot;
 import frc.robot.commands.DriveCommand;
-import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.LimeLight;
 
 /**
  * The VM is configured to automatically run this class, and to call the functions corresponding to
@@ -25,8 +20,6 @@ import frc.robot.subsystems.LimeLight;
 public class Robot extends TimedRobot {
 
   public static RobotContainer m_robotContainer;
-  public static DriveTrain driveTrain = new DriveTrain();
-  public static LimeLight lime = new LimeLight();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -34,6 +27,8 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotInit() {
+
+    m_robotContainer = new RobotContainer();
     
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
@@ -72,7 +67,9 @@ public class Robot extends TimedRobot {
   public void autonomousInit() 
   {
     CommandScheduler.getInstance().cancelAll();
-    driveTrain.setDefaultCommand(new CenterTargetRobot());
+    //driveTrain.setDefaultCommand(new CenterTargetRobot());
+    m_robotContainer.driveTrain.setDefaultCommand(m_robotContainer.getAutonomousCommand());
+    
   }
 
   /*
@@ -92,7 +89,12 @@ public class Robot extends TimedRobot {
     // this line or comment it out.  
     CommandScheduler.getInstance().cancelAll();
     m_robotContainer = new RobotContainer();
-    driveTrain.setDefaultCommand(new DriveCommand(()->(m_robotContainer.getLeft()), ()->(m_robotContainer.getRight())));
+    m_robotContainer.driveTrain.setDefaultCommand(new DriveCommand(
+                                                                  ()->(m_robotContainer.getLeft()), 
+                                                                  ()->(m_robotContainer.getRight()), 
+                                                                  m_robotContainer.driveTrain));
+    //driveTrain.setDefaultCommand(new ShootBall(()->(m_robotContainer.getLeft())));
+    //driveTrain.setDefaultCommand(new ShootBall());
   }
 
   /**

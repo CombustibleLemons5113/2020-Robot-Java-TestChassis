@@ -1,15 +1,15 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
+import frc.robot.subsystems.Turret;
 
-public class CenterTargetRobot extends CommandBase
+public class CenterTargetTurret extends CommandBase
 {
 
     private LimeLight lime;
-    private DriveTrain driveTrain;
-
+    private Turret turret;
+    
     //private double goal = 0.0;
     private double error;
     private double offsetX;
@@ -47,12 +47,11 @@ public class CenterTargetRobot extends CommandBase
     private double deltaI;
     private double deltaD;
 
-    public CenterTargetRobot(DriveTrain driveTrain, LimeLight lime)
+    public CenterTargetTurret(Turret turret, LimeLight lime)
     {
-        this.driveTrain = driveTrain;
+        this.turret = turret;
         this.lime = lime;
-        System.out.println("works");
-        addRequirements(driveTrain);
+        addRequirements(turret);
         addRequirements(lime);
         offsetX = lime.getTx();
         deltaI = 0.2 * offsetX/Math.abs(offsetX);
@@ -110,7 +109,7 @@ public class CenterTargetRobot extends CommandBase
             // System.out.println(error + " error");
             //System.out.println(PID(error)+" output");
             //System.out.println(deltaI+" deltaI");
-            driveTrain.driveCartesian(PID(error), -PID(error));
+            turret.setSpeed(PID(error));
         }
         else
         {
@@ -131,7 +130,7 @@ public class CenterTargetRobot extends CommandBase
         offsetXPrev = offsetX;
 
         
-        speed = Math.abs(driveTrain.getWheelSpeeds().leftMetersPerSecond);
+        speed = 1;//Math.abs(Robot.driveTrain.getWheelSpeeds().leftMetersPerSecond);
         if(speed != 0)
         {
             //System.out.print("herenegjajgajsjfs");
