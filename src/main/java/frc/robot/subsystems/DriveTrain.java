@@ -22,6 +22,7 @@ import edu.wpi.first.wpilibj.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveKinematics;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveOdometry;
 import edu.wpi.first.wpilibj.kinematics.DifferentialDriveWheelSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.util.Units;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static frc.robot.Constants.ChassisConstants.*;
@@ -30,30 +31,30 @@ public class DriveTrain extends SubsystemBase {
   /**
    * Creates a new DriveTrain.
    */
-  
+
   public WPI_TalonFX leftMaster = new WPI_TalonFX(kFLChassis);
   public WPI_TalonFX rightMaster = new WPI_TalonFX(kFRChassis);
   public WPI_TalonFX leftSlave = new WPI_TalonFX(kBLChassis);
   public WPI_TalonFX rightSlave = new WPI_TalonFX(kBRChassis);
 
-  private SpeedControllerGroup leftSide = new SpeedControllerGroup(leftMaster, leftSlave);
+  private SpeedControllerGroup leftSide = new SpeedControllerGroup(leftMaster, leftSlave); //SpeedControllerGroup allows for multiple SpeedControllers to be linked together
   private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightMaster, rightSlave);
 
-  private DifferentialDrive driveBase = new DifferentialDrive(leftSide, rightSide);
-  private AHRS gyro = new AHRS(SPI.Port.kMXP); //we might need to set the update rate to 60 hz
+  private DifferentialDrive driveBase = new DifferentialDrive(leftMaster, rightMaster); //allows for us to 
+  //private AHRS gyro = new AHRS(SPI.Port.kMXP); //we might need to set the update rate to 60 hz
 
   public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(kTrackWidth);
   private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
 
   private SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(kSChassis, kVChassis, kAChassis);
   
-  private double kp = 0.001;
-  private double ki = 0.00001;
-  private double kd = 0.1;
+  //private double kp = 0.001;
+  //private double ki = 0.00001;
+  //private double kd = 0.1;
   
-  private double setPoint = 100;
+  //private double setPoint = 100;
   
-  private PIDController pid = new edu.wpi.first.wpilibj.controller.PIDController(kp, ki, kd);
+  //private PIDController pid = new edu.wpi.first.wpilibj.controller.PIDController(kp, ki, kd);
 
   public DriveTrain() {
 
@@ -63,56 +64,50 @@ public class DriveTrain extends SubsystemBase {
     rightSlave.configFactoryDefault();
 
     
-    leftSlave.follow(leftMaster);
-    rightSlave.follow(rightMaster);
+    leftSlave.set(ControlMode.Follower, leftMaster.getDeviceID());
+    rightSlave.set(ControlMode.Follower, rightMaster.getDeviceID());  
     
-    //leftMaster.set(ControlMode.Velocity, 100);;
-
-    //leftMaster.control
-
-    leftMaster.config_kP(1, 2, 30);
-    leftMaster.config_kI(1, 0.001, 30);
-    leftMaster.config_kD(1, 0, 30);
-
-    leftSide.setInverted(false);
-    rightSide.setInverted(false);
+    //leftMaster.config_kP(1, 2, 30);
+    //leftMaster.config_kI(1, 0.001, 30);
+    //leftMaster.config_kD(1, 0, 30);
 
     leftMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
     rightMaster.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
     leftSlave.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
     rightSlave.configSelectedFeedbackSensor(FeedbackDevice.IntegratedSensor, 0, 30);
 
-    leftMaster.configOpenloopRamp(1);
-    rightMaster.configOpenloopRamp(1);
-
     leftMaster.setNeutralMode(NeutralMode.Brake);
     rightMaster.setNeutralMode(NeutralMode.Brake);
     leftSlave.setNeutralMode(NeutralMode.Brake);
     rightSlave.setNeutralMode(NeutralMode.Brake);
+    
+    rightMaster.configClosedloopRamp(0.5);
+    leftMaster.configClosedloopRamp(0.5);
 
-    gyro.reset();
+    //gyro.reset();
 
+   // this.setMaxVoltage(0.5);
 
     
-    gyro.enableLogging(true);
-    System.out.println(gyro.getFirmwareVersion());
+   // gyro.enableLogging(true);
+   // System.out.println(gyro.getFirmwareVersion());
     //gyro.isCalibrating();
-    System.out.println(gyro.isRotating());
+    //System.out.println(gyro.isRotating());
 
-    pid.setSetpoint(setPoint);
-    leftMaster.set(ControlMode.Velocity, 2000);
+    //pid.setSetpoint(setPoint);
+    //leftMaster.set(ControlMode.Velocity, 2000);
 
   }
 
   public void resetEncoders() {
-    rightMaster.setSelectedSensorPosition(0);
+    /*rightMaster.setSelectedSensorPosition(0);
     rightSlave.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
-    leftSlave.setSelectedSensorPosition(0);
+    leftSlave.setSelectedSensorPosition(0);*/
   }
 
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(-gyro.getAngle());
+    return Rotation2d.fromDegrees(0);//Math.IEEEremainder(gyro.getAngle(), 360));
   }
 
   public Pose2d getPose() {
@@ -120,7 +115,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    odometry.resetPosition(pose, getHeading());
+    //odometry.resetPosition(pose, getHeading());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() 
@@ -139,27 +134,36 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void setMaxVoltage(double max) {
-    driveBase.setMaxOutput(max);
+    driveBase.setMaxOutput(12);
   }
 
   public double getTurnRate() {
-    return gyro.getRate();
+    return 0;//gyro.getRate();
   }
 
   public void driveCartesian(double left, double right) {
-    driveBase.tankDrive(left, right); 
+    leftMaster.set(ControlMode.PercentOutput, left);
+    rightMaster.set(ControlMode.PercentOutput, -right);
+
+    //SmartDashboard.putNumber("left", left);
+    //SmartDashboard.putNumber("right", right);
+    SmartDashboard.putNumber("rightFront", rightMaster.get());
+    SmartDashboard.putNumber("leftFront", leftMaster.get());
+    SmartDashboard.putNumber("rightBack", rightSlave.get());
+    SmartDashboard.putNumber("leftBack", leftSlave.get());
+
   }
 
   public void tankDriveVolts(double leftVolts, double rightVolts) {
-    leftMaster.setVoltage(leftVolts);
-    rightMaster.setVoltage(rightVolts);
+    leftSide.setVoltage(leftVolts);
+    rightSide.setVoltage(-rightVolts);
   }
 
   public void setLeftSpeed() 
   {
     //leftMaster.setVoltage(pid.calculate(getLeftRPM(),setPoint) + feedforward.calculate(setPoint));
-    System.out.println(leftMaster.getSelectedSensorVelocity(0));
-    System.out.println(leftMaster.getSupplyCurrent());
+    //System.out.println(leftMaster.getSelectedSensorVelocity(0));
+    //System.out.println(leftMaster.getSupplyCurrent());
     
   }
 
@@ -175,7 +179,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    odometry.update(getHeading(), leftMaster.getSelectedSensorPosition(), rightMaster.getSelectedSensorPosition());
+    //odometry.update(getHeading(), leftMaster.getSelectedSensorPosition(), rightMaster.getSelectedSensorPosition());
   }
 
 }

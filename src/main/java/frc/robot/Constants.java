@@ -33,7 +33,7 @@ public final class Constants {
 		public static final double kSChassis = 0.0741;
 		public static final double kVChassis = 2.87;
 		public static final double kAChassis = 0.289;
-		public static final double kPDriveVel = 17.9;
+		public static final double kPDriveVel = 0.45;
 
 		//AUTON HELPERS
 		public static final DifferentialDriveKinematics kDriveKinematics = new DifferentialDriveKinematics(kTrackWidth);
@@ -45,7 +45,7 @@ public final class Constants {
 	public static final class IntakeConstants {
 
 		//INTAKE PISTON AND MOTOR *********** PORTS NEED UPDATING
-		public static final int kIntakeMotor = 0;
+		public static final int kIntakeMotor = 40;
 		public static final int kLIntakePiston = 0;
 		public static final int kRIntakePiston = 0;
 
@@ -55,15 +55,24 @@ public final class Constants {
 
 		//INDEXER MOTORS NEED TO BE ADDED
 
+		public static final int kExtIndexMotor = 41;
+		public static final int kMidIndexMotor = 42;
+	}
+
+	public static final class HopperConstants {
+
+		//HOPPER MOTORS
+		public static final int kHopperMotor = 43;
+
 	}
 	
 	public static final class TurretConstants {
 
 		//TURRET MOTOR PORT
-		public static final int kTurretMotor = 2; //<THIS IS A SUBSTITUTE NUMBER NOT ACTUAL NUMBER
-
-
-	}
+		public static final int kTurretMotor = 44; 
+		
+		
+			}
 
 	public static final class LimelightConstants {
 
@@ -79,11 +88,12 @@ public final class Constants {
 		//ALL NEED UPDATING
 
 		//SHOOTER MOTOR PORTS
-		public static final int kLShooterMotor = 0;
-		public static final int kRShooterMotor = 1;
+		public static final int kLShooterMotor = 31;
+		public static final int kRShooterMotor = 32;
 		
 		//HOOD PISTON PORTS
 		public static final int kRHoodPiston = 0;
+		
 		public static final int kLHoodPiston = 0;
 
 		//S AND V VALUES FOR SHOOTER
@@ -106,7 +116,7 @@ public final class Constants {
 	}
 
 
-	
+		
 
 	
 	

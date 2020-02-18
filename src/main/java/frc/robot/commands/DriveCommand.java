@@ -18,7 +18,7 @@ public class DriveCommand extends CommandBase {
    */
 
   private DriveTrain driveTrain;
-  private DoubleSupplier leftVal;
+  private DoubleSupplier leftVal; //DoubleSupplier is a supplier of double-valued results, allows us to get multiple values simultaneously
   private DoubleSupplier rightVal;
 
   public DriveCommand(DoubleSupplier leftVal, DoubleSupplier rightVal, DriveTrain driveTrain) {

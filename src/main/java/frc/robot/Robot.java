@@ -7,6 +7,10 @@
 
 package frc.robot;
 
+import com.revrobotics.CANSparkMax;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import com.revrobotics.CANEncoder;
+
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.commands.DriveCommand;
@@ -21,15 +25,21 @@ public class Robot extends TimedRobot {
 
   public static RobotContainer m_robotContainer;
 
+  //private CANSparkMax m_motor;
+  
   /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
+   * This function is run when the robot is first started up and should be used
+   * for any initialization code.
    */
+
   @Override
   public void robotInit() {
 
     m_robotContainer = new RobotContainer();
-    
+    //m_motor = new CANSparkMax(deviceID, type); // Input the SparkMax port here *note* might need to add more if multiple sparkmax
+    //m_motor.restoreFactoryDefaults(); // R estores the SparkMax code to Factory Default
+    //m_motor.getEncoder(); //Vinay comment this out if this crashes the robot. I will work on fixing this when I have the ports/IDs. 
+
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
   }
@@ -43,6 +53,7 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
@@ -78,7 +89,7 @@ public class Robot extends TimedRobot {
   @Override
   public void autonomousPeriodic() 
   {  
-    CommandScheduler.getInstance().run();
+    
   }
 
   @Override
@@ -90,8 +101,8 @@ public class Robot extends TimedRobot {
     CommandScheduler.getInstance().cancelAll();
     m_robotContainer = new RobotContainer();
     m_robotContainer.driveTrain.setDefaultCommand(new DriveCommand(
-                                                                  ()->(m_robotContainer.getLeft()), 
-                                                                  ()->(m_robotContainer.getRight()), 
+                                                                  ()->(-0.4*m_robotContainer.getLeft()), 
+                                                                  ()->(-0.4*m_robotContainer.getRight()), 
                                                                   m_robotContainer.driveTrain));
     //driveTrain.setDefaultCommand(new ShootBall(()->(m_robotContainer.getLeft())));
     //driveTrain.setDefaultCommand(new ShootBall());
@@ -104,7 +115,7 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() 
   {
     //System.out.println(driveTrain.getDefaultCommand());
-    CommandScheduler.getInstance().run();
+   
   }
 
   @Override

@@ -14,13 +14,13 @@ public class Climb extends CommandBase {
         addRequirements(climber);
     }
 
-    @Override
+    @Override //overrides current state of robot when class is initiated 
     public void initialize() {
-        SmartDashboard.putString("ClimbStatus", "Currently Climbing!");
+        SmartDashboard.putString("ClimbStatus", "Currently Climbing!"); //Tells driver on an interface that the robot is climbing
     }
 
     @Override
     public void execute() {
-        climber.setSpeed(kClimbSpeed);
+        climber.setSpeed(kClimbSpeed); //supposed to set the speed of the climber
     }
 }

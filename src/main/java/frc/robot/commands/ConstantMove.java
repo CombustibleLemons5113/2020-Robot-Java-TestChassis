@@ -25,7 +25,7 @@ public class ConstantMove extends CommandBase {
     @Override
     public void initialize() {
         //raise the hood here
-        System.out.println("SAMEHSHAHHFDDJKADJLFJLDFAJLFADJLFALJFDLJJLDFAJLAFDADFLJLJDFAJLDFA0T90350505");
+        System.out.println("Error Initializing Constant Move");
         driveTrain.setLeftSpeed();
     }
 

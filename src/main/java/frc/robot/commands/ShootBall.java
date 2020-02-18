@@ -8,6 +8,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.Shooter;
 
 public class ShootBall extends CommandBase {
@@ -16,18 +17,20 @@ public class ShootBall extends CommandBase {
      */
     public int spinCount = 0;
     public int hoodCount = 0;
+    public double speed;
 
     private final Shooter shooter;
 
-    public ShootBall(Shooter shooter) {
+    public ShootBall(double speed, Shooter shooter) {
+        System.out.print("heleleleleo");
         this.shooter = shooter;
+        this.speed = speed;
         addRequirements(shooter);
     }
 
-    public double calculateNeededSpeed () {
+    public double calculateNeededSpeed () { //method to figure the speed of the shooter
         //double distance = Robot.m_robotContainer.lime.getDistanceToTarget();
         //there is literally no way to do that without testing it using the actual shooter
-        double speed = 5000;   
         return speed;
     }
 
@@ -43,11 +46,12 @@ public class ShootBall extends CommandBase {
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        if(hoodCount > 50)
+        System.out.print("helelelelelelelellelelelo");
+        if(true)
         {
             spinCount++;
             //Robot.shooter.setSpeed(speed.getAsDouble());
-            shooter.setSpeed(calculateNeededSpeed());
+            shooter.setSpeed(speed);
         }
         else
             hoodCount++;
@@ -66,6 +70,6 @@ public class ShootBall extends CommandBase {
     @Override
     public boolean isFinished() 
     {
-        return spinCount > 300;
+        return false;
     }
 }

@@ -4,10 +4,10 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 import frc.robot.subsystems.LimeLight;
 
-public class CenterTargetRobot extends CommandBase
+public class CenterTargetRobot extends CommandBase //this class is apart of the CommandBase 
 {
 
-    private LimeLight lime;
+    private LimeLight lime; 
     private DriveTrain driveTrain;
 
     //private double goal = 0.0;
@@ -49,7 +49,7 @@ public class CenterTargetRobot extends CommandBase
 
     public CenterTargetRobot(DriveTrain driveTrain, LimeLight lime)
     {
-        this.driveTrain = driveTrain;
+        this.driveTrain = driveTrain; // Using ‘this’ keyword to refer current class instance variables
         this.lime = lime;
         System.out.println("works");
         addRequirements(driveTrain);

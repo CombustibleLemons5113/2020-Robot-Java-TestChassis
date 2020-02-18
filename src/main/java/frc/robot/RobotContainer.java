@@ -28,6 +28,7 @@ import frc.robot.commands.CenterTargetRobot;
 import frc.robot.commands.ShootBall;
 import frc.robot.subsystems.Climber;
 import frc.robot.subsystems.DriveTrain;
+import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.LimeLight;
 import frc.robot.subsystems.Shooter;
 import frc.robot.subsystems.Turret;
@@ -43,15 +44,16 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public final DriveTrain driveTrain = new DriveTrain();
-  public final Shooter shooter = new Shooter();
-  public final LimeLight lime = new LimeLight();
-  public final Turret turret = new Turret();
-  public final Climber climber = new Climber();
-
+  public final Shooter shooter  = new Shooter();
+  //public final LimeLight lime  = new LimeLight();
+  //public final Turret turret  = new Turret();
+  //public final Climber climber = new Climber();
+  //public final Indexer indexer  = new Indexer();
   public Joystick controllerLeft = new Joystick(1);
   public Joystick controllerRight = new Joystick(0);
   public JoystickButton leftTrigger = new JoystickButton(controllerLeft, 1);
   public JoystickButton rightTrigger = new JoystickButton(controllerRight, 1);
+  
 
 
   /**
@@ -84,8 +86,8 @@ public class RobotContainer {
    */
   private void configureButtonBindings() {
     
-    leftTrigger.whenPressed(new CenterTargetRobot(driveTrain, lime));
-    rightTrigger.whenPressed(new ShootBall(shooter));
+    //leftTrigger.whenPressed(new CenterTargetRobot(driveTrain, lime));
+    //rightTrigger.whileHeld(new ShootBall(0.75, shooter));
     //leftTrigger.and(rightTrigger).toggleWhenActive(new CenterTarget(""));
 
   }
@@ -107,8 +109,8 @@ public class RobotContainer {
 
     // Create config for trajectory
     TrajectoryConfig config =
-        new TrajectoryConfig(10,
-                             5)
+        new TrajectoryConfig(0.5,
+                             0.1)
             // Add kinematics to ensure max speed is actually obeyed
             .setKinematics(kDriveKinematics)
             // Apply the voltage constraint

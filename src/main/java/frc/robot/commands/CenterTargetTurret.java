@@ -35,7 +35,7 @@ public class CenterTargetTurret extends CommandBase
 
     private double speed;
     //old is 0.0075
-    private double kp = 0.0075   ;
+    private double kp = 0.0075;
     //old is 0.0005,0.0001,0.00075 is good
     private double ki = 0.00015;
     //old is 0.1    

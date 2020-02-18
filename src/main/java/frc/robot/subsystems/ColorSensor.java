@@ -10,7 +10,7 @@ public class ColorSensor {
     private ColorSensorV3 color;
     
     public ColorSensor()  { 
-        color = new ColorSensorV3(I2C.Port.kMXP); //I2C port goes here
+        color = new ColorSensorV3(I2C.Port.kMXP); //I2C port goes here.
     }
 
     public Color getColor() {
@@ -33,8 +33,6 @@ public class ColorSensor {
         System.out.print("R: " + getRed() + " G: " + getGreen() + "B: " + getBlue());
 
     }
-
-//SmartDashboard.putNumber("TrenchColor" color); //Sukh Finish this
 
     /* According to the Game Manual, the CMYB values for the colors, and RBG conversions for them, are as follows:
     Blue: C: 100 M: 0 Y: 0 B: 0 / R: 0 G: 255 B: 255
