@@ -49,6 +49,8 @@ public final class Constants {
 		public static final int kLIntakePiston = 0;
 		public static final int kRIntakePiston = 0;
 
+		//public static final double kIntakeSpeed = 0.75;
+
 	}
 
 	public static final class IndexerConstants {

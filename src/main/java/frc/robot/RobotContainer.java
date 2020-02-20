@@ -24,14 +24,9 @@ import edu.wpi.first.wpilibj.trajectory.constraint.DifferentialDriveVoltageConst
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RamseteCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
-import frc.robot.commands.CenterTargetRobot;
-import frc.robot.commands.ShootBall;
-import frc.robot.subsystems.Climber;
+import frc.robot.commands.TestCommand;
 import frc.robot.subsystems.DriveTrain;
-import frc.robot.subsystems.Indexer;
 import frc.robot.subsystems.LimeLight;
-import frc.robot.subsystems.Shooter;
-import frc.robot.subsystems.Turret;
 import static frc.robot.Constants.ChassisConstants.*;
 
 /**
@@ -44,15 +39,12 @@ public class RobotContainer {
   // The robot's subsystems and commands are defined here...
 
   public final DriveTrain driveTrain = new DriveTrain();
-  public final Shooter shooter  = new Shooter();
-  //public final LimeLight lime  = new LimeLight();
-  //public final Turret turret  = new Turret();
-  //public final Climber climber = new Climber();
-  //public final Indexer indexer  = new Indexer();
+  public final LimeLight lime  = new LimeLight();
   public Joystick controllerLeft = new Joystick(1);
   public Joystick controllerRight = new Joystick(0);
   public JoystickButton leftTrigger = new JoystickButton(controllerLeft, 1);
   public JoystickButton rightTrigger = new JoystickButton(controllerRight, 1);
+  public JoystickButton rightButton = new JoystickButton(controllerRight, 4);
   
 
 
@@ -85,11 +77,8 @@ public class RobotContainer {
    * {@link edu.wpi.first.wpilibj2.command.button.JoystickButton}.
    */
   private void configureButtonBindings() {
-    
-    //leftTrigger.whenPressed(new CenterTargetRobot(driveTrain, lime));
-    //rightTrigger.whileHeld(new ShootBall(0.75, shooter));
-    //leftTrigger.and(rightTrigger).toggleWhenActive(new CenterTarget(""));
-
+    //leftTrigger.and(rightTrigger).toggleWhenActive(new CenterTargetRobot(driveTrain, lime)); 
+    rightTrigger.whileHeld(new TestCommand(driveTrain));
   }
 
 

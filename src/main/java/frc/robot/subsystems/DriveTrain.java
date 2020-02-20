@@ -12,7 +12,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonFX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.controller.PIDController;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.SpeedControllerGroup;
 import edu.wpi.first.wpilibj.controller.SimpleMotorFeedforward;
@@ -41,7 +40,7 @@ public class DriveTrain extends SubsystemBase {
   private SpeedControllerGroup rightSide = new SpeedControllerGroup(rightMaster, rightSlave);
 
   private DifferentialDrive driveBase = new DifferentialDrive(leftMaster, rightMaster); //allows for us to 
-  //private AHRS gyro = new AHRS(SPI.Port.kMXP); //we might need to set the update rate to 60 hz
+  private AHRS gyro = new AHRS(SPI.Port.kMXP); //we might need to set the update rate to 60 hz
 
   public DifferentialDriveKinematics kinematics = new DifferentialDriveKinematics(kTrackWidth);
   private DifferentialDriveOdometry odometry = new DifferentialDriveOdometry(getHeading());
@@ -84,14 +83,14 @@ public class DriveTrain extends SubsystemBase {
     rightMaster.configClosedloopRamp(0.5);
     leftMaster.configClosedloopRamp(0.5);
 
-    //gyro.reset();
+    gyro.reset();
 
    // this.setMaxVoltage(0.5);
 
     
-   // gyro.enableLogging(true);
+    gyro.enableLogging(true);
    // System.out.println(gyro.getFirmwareVersion());
-    //gyro.isCalibrating();
+    gyro.isCalibrating();
     //System.out.println(gyro.isRotating());
 
     //pid.setSetpoint(setPoint);
@@ -100,14 +99,14 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetEncoders() {
-    /*rightMaster.setSelectedSensorPosition(0);
+    rightMaster.setSelectedSensorPosition(0);
     rightSlave.setSelectedSensorPosition(0);
     leftMaster.setSelectedSensorPosition(0);
-    leftSlave.setSelectedSensorPosition(0);*/
+    leftSlave.setSelectedSensorPosition(0);
   }
 
   public Rotation2d getHeading() {
-    return Rotation2d.fromDegrees(0);//Math.IEEEremainder(gyro.getAngle(), 360));
+    return Rotation2d.fromDegrees(Math.IEEEremainder(gyro.getAngle(), 360));
   }
 
   public Pose2d getPose() {
@@ -115,7 +114,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public void resetOdometry(Pose2d pose) {
-    //odometry.resetPosition(pose, getHeading());
+    odometry.resetPosition(pose, getHeading());
   }
 
   public DifferentialDriveWheelSpeeds getWheelSpeeds() 
@@ -138,7 +137,7 @@ public class DriveTrain extends SubsystemBase {
   }
 
   public double getTurnRate() {
-    return 0;//gyro.getRate();
+    return gyro.getRate();
   }
 
   public void driveCartesian(double left, double right) {
@@ -157,6 +156,7 @@ public class DriveTrain extends SubsystemBase {
   public void tankDriveVolts(double leftVolts, double rightVolts) {
     leftSide.setVoltage(leftVolts);
     rightSide.setVoltage(-rightVolts);
+    driveBase.feed();
   }
 
   public void setLeftSpeed() 
@@ -179,7 +179,7 @@ public class DriveTrain extends SubsystemBase {
 
   @Override
   public void periodic() {
-    //odometry.update(getHeading(), leftMaster.getSelectedSensorPosition(), rightMaster.getSelectedSensorPosition());
+    odometry.update(getHeading(), leftMaster.getSelectedSensorPosition(), rightMaster.getSelectedSensorPosition());
   }
 
 }

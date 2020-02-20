@@ -7,16 +7,17 @@
 
 package frc.robot.commands;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.DriveTrain;
 
-public class ConstantMove extends CommandBase {
+public class TestCommand extends CommandBase {
     /**
      * Creates a new DriveCommands.
      */
     private DriveTrain driveTrain;
 
-    public ConstantMove(DriveTrain driveTrain) {
+    public TestCommand(DriveTrain driveTrain) {
         this.driveTrain = driveTrain;
         addRequirements(driveTrain);
     }
@@ -24,22 +25,18 @@ public class ConstantMove extends CommandBase {
 	// Called when the command is initially scheduled.
     @Override
     public void initialize() {
-        //raise the hood here
-        System.out.println("Error Initializing Constant Move");
-        driveTrain.setLeftSpeed();
+        //do nothing
     }
 
     // Called every time the scheduler runs while the command is scheduled.
     @Override
     public void execute() {
-        driveTrain.setLeftSpeed();
+        SmartDashboard.putString("Angle:", driveTrain.getHeading().toString());
     }
 
     // Called once the command ends or is interrupted.
     @Override
     public void end(boolean interrupted) {
-        //Lower the hood here
-        //Robot.shooter.switchPistonState();
     }
 
     // Returns true when the command should end.
